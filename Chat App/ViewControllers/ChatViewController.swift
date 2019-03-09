@@ -14,7 +14,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var nav: UINavigationItem!
     
     @IBOutlet weak var txtField: UITextField!
-    
+    var messageContent = [String]()
     var user : Contact? {
         didSet {
             nav.title = user?.name
@@ -38,17 +38,32 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        observeMessages {
+            self.collectionView.reloadData()
+        }
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return messageContent.count
     }
      func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-        cell.txtLabel.text = "Nooo"
+        cell.txtLabel.text = messageContent[indexPath.row]
         return cell
+    }
+
+    func observeMessages(closure: @escaping () -> Void){
+        DBProvider.shared.messages.observe(.childAdded, with: { (snapShot) in
+
+            if let dic = snapShot.value as? [String:AnyObject] {
+
+                let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String)
+                self.messageContent.append(message.text)
+            }
+            closure()
+        }, withCancel: nil)
     }
 
 }
