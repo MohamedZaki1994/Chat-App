@@ -31,6 +31,7 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
     
     func dataReceived(cont: [Contact]) {
         self.contacts = cont
+        self.tableview.reloadData()
     }
     
     func user(name: String) {
@@ -82,11 +83,13 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
 
     func getName(id: String) -> String {
         for contact in contacts {
-            for message in messages{
-                if contact.id == message.toID {
-                    return contact.name
+            if id == contact.id {
+                for message in messages{
+                    if contact.id == message.toID {
+                        return contact.name
+                    }
                 }
-        }
+            }
         }
         return "None"
     }
