@@ -59,7 +59,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
             if let dic = snapShot.value as? [String:AnyObject] {
 
-                let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String)
+                let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? Double)!)
                 self.messageContent.append(message.text)
             }
             closure()

@@ -13,6 +13,7 @@ class Message {
     private var _toId : String
     private var _fromId : String
     private var _text : String
+    private var _time: TimeInterval
     
     var toID: String {
         return _toId
@@ -25,11 +26,16 @@ class Message {
     var text: String {
         return _text
     }
+
+    var time: TimeInterval {
+        return _time
+    }
     
-    init(toId: String, fromId: String, text: String) {
+    init(toId: String, fromId: String, text: String, time: TimeInterval) {
         self._toId = toId
         self._fromId = fromId
         self._text = text
+        self._time = time
     }
     
 }
