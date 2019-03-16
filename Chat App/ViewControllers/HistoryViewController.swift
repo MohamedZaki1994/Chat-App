@@ -21,7 +21,13 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
         let timeStamp = NSDate(timeIntervalSince1970: messages[indexPath.row].time)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "hh:mm:ss a"
-        cell.textLabel?.text = getName(id: messages[indexPath.row].toID) + "    \(dateFormatter.string(from: timeStamp as Date))"
+        var receivedUser = ""
+        if messages[indexPath.row].toID == AuthProvider.shared.getCurrentContactID() {
+            receivedUser = messages[indexPath.row].fromId
+        } else {
+            receivedUser = messages[indexPath.row].toID
+        }
+        cell.textLabel?.text = receivedUser + "    \(dateFormatter.string(from: timeStamp as Date))"
         cell.detailTextLabel?.text = messages[indexPath.row].text
         return cell
     }
@@ -67,10 +73,13 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
         DBProvider.shared.delegate = self
         DBProvider.shared.getCurrentContact()
         DBProvider.shared.getContacts()
-        observeMessages() {
+//        observeMessages() {
+//            self.tableview.reloadData()
+//        }
+        observeUserMessages {
             self.tableview.reloadData()
         }
-        
+
     }
 
     func observeMessages(closure: @escaping () -> Void){
@@ -78,8 +87,7 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
             
             if let dic = snapShot.value as? [String:AnyObject] {
                 
-                let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? Double)!)
-//                self.messages.append(message)
+                let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
                 self.messagesDic[message.toID] = message
                 self.messages = Array(self.messagesDic.values)
                 self.messages.sort(by: { (m1, m2) -> Bool in
@@ -88,6 +96,27 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
             }
             closure()
         }, withCancel: nil)
+    }
+
+    func observeUserMessages(closure: @escaping () -> Void) {
+        DBProvider.shared.dataref.child("User-Messages").child(AuthProvider.shared.getCurrentContactID()).observe(.childAdded) { (snapShot) in
+
+            let messageKey = snapShot.key
+            DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dic = snapshot.value as? [String:AnyObject] {
+
+                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
+                    self.messagesDic[message.toID] = message
+                    self.messages = Array(self.messagesDic.values)
+                    self.messages.sort(by: { (m1, m2) -> Bool in
+                        return m1.time > m2.time
+                    })
+                }
+                closure()
+            })
+
+            closure()
+        }
     }
 
     func getName(id: String) -> String {

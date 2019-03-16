@@ -31,7 +31,15 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
        let fromID = AuthProvider.shared.getCurrentContactID()
         let timeStamp = NSDate().timeIntervalSince1970
-        DBProvider.shared.messages.childByAutoId().updateChildValues(["txt":txt, "toId":self.user?.id ?? 0, "fromId": fromID,"timeStamp":timeStamp])
+        let autoId = DBProvider.shared.messages.childByAutoId()
+        autoId.updateChildValues(["txt":txt, "toId":self.user?.id ?? 0, "fromId": fromID,"timeStamp":timeStamp]) { (error, ref) in
+            if error != nil {
+                print(error as Any)
+                return
+            }
+            DBProvider.shared.dataref.child("User-Messages").child(fromID).updateChildValues([autoId.key: txt])
+            DBProvider.shared.dataref.child("User-Messages").child(self.user?.id ?? "").updateChildValues([autoId.key: txt])
+        }
         collectionView.reloadData()
         txtField.text = ""
     }
@@ -64,6 +72,12 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             }
             closure()
         }, withCancel: nil)
+    }
+
+    func observeUserMessages(closure: () -> Void) {
+        DBProvider.shared.dataref.child("User-Messages").child(AuthProvider.shared.getCurrentContactID()).observe(.childAdded) { (snapShot) in
+            print(snapShot)
+        }
     }
 
 }
