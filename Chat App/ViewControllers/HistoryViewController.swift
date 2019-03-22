@@ -59,7 +59,7 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
     
     
     @IBAction func chatBtn(_ sender: Any) {
-        let TableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TableViewController") as! TableViewController
+        let TableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TableViewController") as! ContactTableViewController
         navigationController?.pushViewController(TableViewController, animated: true)
 
     }
@@ -73,9 +73,6 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
         DBProvider.shared.delegate = self
         DBProvider.shared.getCurrentContact()
         DBProvider.shared.getContacts()
-//        observeMessages() {
-//            self.tableview.reloadData()
-//        }
         observeUserMessages {
             self.tableview.reloadData()
         }
