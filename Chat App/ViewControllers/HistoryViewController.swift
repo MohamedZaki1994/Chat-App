@@ -8,33 +8,15 @@
 
 import UIKit
 
-class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate , UITableViewDataSource{
+class HistoryViewController: UIViewController , fetchdata {
     
     @IBOutlet weak var tableview: UITableView!
-    var contacts: [Contact] = []
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let timeStamp = NSDate(timeIntervalSince1970: messages[indexPath.row].time)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss a"
-        var receivedUser = ""
-        if messages[indexPath.row].toID == AuthProvider.shared.getCurrentContactID() {
-            receivedUser = messages[indexPath.row].fromId
-        } else {
-            receivedUser = messages[indexPath.row].toID
-        }
-        cell.textLabel?.text = receivedUser + "    \(dateFormatter.string(from: timeStamp as Date))"
-        cell.detailTextLabel?.text = messages[indexPath.row].text
-        return cell
-    }
-    
-    
     var messages : [Message] = []
+    var contacts: [Contact] = []
     var messagesDic = [String: Message]()
+
+
+
     func getAllimage(imagesData: Data) {
         
     }
@@ -50,7 +32,6 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
     
 
     @IBOutlet weak var nav: UINavigationItem!
-    
     @IBAction func Logout(_ sender: Any) {
         if AuthProvider.shared.logout() {
             dismiss(animated: true, completion: nil)
@@ -119,13 +100,46 @@ class HistoryViewController: UIViewController , fetchdata , UITableViewDelegate 
     func getName(id: String) -> String {
         for contact in contacts {
             if id == contact.id {
-                for message in messages{
-                    if contact.id == message.toID {
-                        return contact.name
-                    }
-                }
+                return contact.name
             }
         }
         return "None"
+    }
+
+    func getContact(id: String) -> Contact? {
+       return contacts.first { (con) -> Bool in
+           return con.id == id
+        }
+    }
+}
+
+extension HistoryViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let timeStamp = NSDate(timeIntervalSince1970: messages[indexPath.row].time)
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm:ss a"
+        var receivedUser = ""
+        if messages[indexPath.row].toID == AuthProvider.shared.getCurrentContactID() {
+            receivedUser = messages[indexPath.row].fromId
+        } else {
+            receivedUser = messages[indexPath.row].toID
+        }
+        cell.textLabel?.text = getName(id: receivedUser) + "    \(dateFormatter.string(from: timeStamp as Date))"
+        cell.detailTextLabel?.text = messages[indexPath.row].text
+        return cell
+    }
+}
+
+extension HistoryViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chatViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatViewController") as! ChatViewController
+        chatViewController.user = getContact(id: messages[indexPath.row].partnerId()) 
+        navigationController?.pushViewController(chatViewController, animated: true)
+
     }
 }

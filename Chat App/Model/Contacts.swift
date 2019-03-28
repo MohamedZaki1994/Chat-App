@@ -26,5 +26,4 @@ class Contact {
         self._id = id
         self._imageURL = imageURL
     }
-    
 }

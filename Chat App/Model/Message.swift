@@ -37,5 +37,8 @@ class Message {
         self._text = text
         self._time = time
     }
-    
+
+    func partnerId() -> String {
+        return AuthProvider.shared.getCurrentContactID() == toID ? fromId : toID
+    }
 }
