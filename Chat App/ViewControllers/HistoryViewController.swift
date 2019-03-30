@@ -83,7 +83,7 @@ class HistoryViewController: UIViewController , fetchdata {
                 if let dic = snapshot.value as? [String:AnyObject] {
 
                     let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
-                    self.messagesDic[message.toID] = message
+                    self.messagesDic[message.partnerId()] = message
                     self.messages = Array(self.messagesDic.values)
                     self.messages.sort(by: { (m1, m2) -> Bool in
                         return m1.time > m2.time
