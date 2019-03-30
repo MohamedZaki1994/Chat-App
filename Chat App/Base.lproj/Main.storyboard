@@ -301,6 +301,9 @@
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ApC-37-p5z">
                                                             <rect key="frame" x="8" y="0.0" width="282" height="83"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="282" id="iIh-CI-ygv"/>
+                                                            </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -326,6 +329,7 @@
                                             <outlet property="cellView" destination="w6j-1N-fAN" id="iB1-QR-S5Y"/>
                                             <outlet property="labelLeading" destination="VfY-hx-la8" id="DFG-MT-HF0"/>
                                             <outlet property="labelTrailing" destination="E14-QM-eRV" id="Tge-95-FVy"/>
+                                            <outlet property="labelWidth" destination="iIh-CI-ygv" id="YLo-K9-vdK"/>
                                             <outlet property="leadingConstraint" destination="NTW-8m-jaX" id="V7b-He-nkl"/>
                                             <outlet property="trailingConstraint" destination="W8X-0C-gUB" id="hx9-zx-y5n"/>
                                             <outlet property="txtLabel" destination="ApC-37-p5z" id="vgs-7O-W84"/>

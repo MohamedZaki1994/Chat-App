@@ -62,30 +62,38 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
      func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+        cell.txtLabel.text = messages[indexPath.row].text
         if messages[indexPath.row].toID == AuthProvider.shared.getCurrentContactID() {
             cell.txtLabel.textAlignment = .left
             cell.txtLabel.backgroundColor = .gray
             cell.txtLabel.textColor = .black
             cell.trailingConstraint.constant = 80
             cell.leadingConstraint.constant = 20
+            cell.labelTrailing.priority = .defaultLow
+            cell.labelLeading.priority = .defaultHigh
+            let size = calculateCellHeight(text: cell.txtLabel.text ?? "")
+            cell.labelWidth.constant = size.width
         } else {
             cell.txtLabel.textAlignment = .right
             cell.txtLabel.backgroundColor = .blue
             cell.txtLabel.textColor = .white
             cell.leadingConstraint.constant = 80
             cell.trailingConstraint.constant = 20
+            cell.labelLeading.priority = .defaultLow
+            cell.labelTrailing.priority = .defaultHigh
+            let size = calculateCellHeight(text: cell.txtLabel.text ?? "")
+            cell.labelWidth.constant = size.width
         }
-        cell.txtLabel.text = messages[indexPath.row].text
 
         return cell
     }
 
-    func calculateCellHeight(text: String) -> CGFloat{
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: (0), height: 0))
+    func calculateCellHeight(text: String) -> CGSize{
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: view.frame.width - 56, height: 0))
         label.numberOfLines = 0
         label.text = text
         label.sizeToFit()
-        return label.frame.height + 10
+        return CGSize(width: label.frame.width , height: label.frame.height + 10)
     }
 
     func observeMessages(closure: @escaping () -> Void){
@@ -108,10 +116,12 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 if let dic = snapshot.value as? [String:AnyObject] {
 
                     let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
-                    self.messages.append(message)
-                    self.messages.sort(by: { (m1, m2) -> Bool in
-                        return m1.time < m2.time
-                    })
+                    if message.partnerId() == self.user?.id {
+                        self.messages.append(message)
+                        self.messages.sort(by: { (m1, m2) -> Bool in
+                            return m1.time < m2.time
+                        })
+                    }
                 }
                 closure()
             })
@@ -123,7 +133,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
 }
 extension ChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = calculateCellHeight(text: messages[indexPath.row].text)
-        return CGSize(width: view.frame.width, height: height)
+        let size = calculateCellHeight(text: messages[indexPath.row].text)
+        return CGSize(width: view.frame.width, height: size.height)
     }
 }

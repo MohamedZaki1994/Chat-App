@@ -17,4 +17,5 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cellView: UIView!
     @IBOutlet weak var labelTrailing: NSLayoutConstraint!
     @IBOutlet weak var labelLeading: NSLayoutConstraint!
+    @IBOutlet weak var labelWidth: NSLayoutConstraint!
 }

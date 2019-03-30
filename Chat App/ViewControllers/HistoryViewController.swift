@@ -16,7 +16,6 @@ class HistoryViewController: UIViewController , fetchdata {
     var messagesDic = [String: Message]()
 
 
-
     func getAllimage(imagesData: Data) {
         
     }
