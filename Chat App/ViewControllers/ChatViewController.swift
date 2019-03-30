@@ -84,7 +84,8 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             let size = calculateCellHeight(text: cell.txtLabel.text ?? "")
             cell.labelWidth.constant = size.width
         }
-
+        cell.txtLabel.layer.masksToBounds = true
+        cell.txtLabel.layer.cornerRadius = 12
         return cell
     }
 
@@ -93,7 +94,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         label.numberOfLines = 0
         label.text = text
         label.sizeToFit()
-        return CGSize(width: label.frame.width , height: label.frame.height + 10)
+        return CGSize(width: label.frame.width, height: label.frame.height + 10)
     }
 
     func observeMessages(closure: @escaping () -> Void){
