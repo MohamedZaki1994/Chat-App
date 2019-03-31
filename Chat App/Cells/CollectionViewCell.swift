@@ -11,6 +11,7 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var txtLabel: UILabel!
+    @IBOutlet weak var bubbleView: UIView!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailingConstraint: NSLayoutConstraint!
     

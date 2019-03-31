@@ -64,8 +64,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         cell.txtLabel.text = messages[indexPath.row].text
         if messages[indexPath.row].toID == AuthProvider.shared.getCurrentContactID() {
-            cell.txtLabel.textAlignment = .left
-            cell.txtLabel.backgroundColor = .gray
+            cell.bubbleView.backgroundColor = .lightGray
             cell.txtLabel.textColor = .black
             cell.trailingConstraint.constant = 80
             cell.leadingConstraint.constant = 20
@@ -74,8 +73,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             let size = calculateCellHeight(text: cell.txtLabel.text ?? "")
             cell.labelWidth.constant = size.width
         } else {
-            cell.txtLabel.textAlignment = .right
-            cell.txtLabel.backgroundColor = .blue
+            cell.bubbleView.backgroundColor = UIColor(red: 0, green: 137/255, blue: 249/255, alpha: 1)
             cell.txtLabel.textColor = .white
             cell.leadingConstraint.constant = 80
             cell.trailingConstraint.constant = 20
@@ -84,8 +82,8 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             let size = calculateCellHeight(text: cell.txtLabel.text ?? "")
             cell.labelWidth.constant = size.width
         }
-        cell.txtLabel.layer.masksToBounds = true
-        cell.txtLabel.layer.cornerRadius = 12
+        cell.bubbleView.layer.masksToBounds = true
+        cell.bubbleView.layer.cornerRadius = 12
         return cell
     }
 
@@ -130,7 +128,6 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             closure()
         }
     }
-
 }
 extension ChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -62,8 +62,6 @@ class DBProvider {
                         if let email = contactData["Username"] as? String,let image = contactData["Image"] as? String {
                             let newContact = Contact(name: email, id: id,imageURL : image)
                             con.append(newContact)
-//                            self.getImage(name: email)
-
                         }
                     }
               
