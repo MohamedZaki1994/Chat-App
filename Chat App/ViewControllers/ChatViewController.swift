@@ -11,6 +11,7 @@ import MobileCoreServices
 import AVKit
 class ChatViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var nav: UINavigationItem!
     @IBOutlet weak var txtField: UITextField!
     var messageContent = [String]()
@@ -24,7 +25,6 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var inputSendView: NSLayoutConstraint!
-    
     @IBAction func sendBtn(_ sender: Any) {
         guard let txt = txtField.text else {
             return
@@ -43,15 +43,34 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         collectionView.reloadData()
         txtField.text = ""
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         observeUserMessages {
             self.collectionView.reloadData()
             self.collectionView.scrollToItem(at: IndexPath(row: self.messages.count-1, section: 0), at: .top, animated: false)
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(whenKeyboardOpens), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(whenKeyboardCloses), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    @objc func whenKeyboardOpens (notifcation: NSNotification) {
+        let keyboardFrame = (notifcation.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        let bottomMargin = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
+        bottomConstraint.constant = -((keyboardFrame?.height ?? 0.0) - bottomMargin)
+        DispatchQueue.main.async {
+            self.collectionView.scrollToItem(at: IndexPath(row: self.messages.count-1, section: 0), at: .top, animated: false)
+        }
+    }
+
+    @objc func whenKeyboardCloses() {
+        bottomConstraint.constant = 0
+    }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
@@ -60,7 +79,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return 1
     }
 
-     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         cell.txtLabel.text = messages[indexPath.row].text
         if messages[indexPath.row].toID == AuthProvider.shared.getCurrentContactID() {
