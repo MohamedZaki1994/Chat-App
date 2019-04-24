@@ -29,7 +29,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         guard let txt = txtField.text else {
             return
         }
-       let fromID = AuthProvider.shared.getCurrentContactID()
+        let fromID = AuthProvider.shared.getCurrentContactID()
         let timeStamp = NSDate().timeIntervalSince1970
         let autoId = DBProvider.shared.messages.childByAutoId()
         autoId.updateChildValues(["txt":txt, "toId":self.user?.id ?? 0, "fromId": fromID,"timeStamp":timeStamp]) { (error, ref) in
@@ -37,8 +37,8 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 print(error as Any)
                 return
             }
-            DBProvider.shared.dataref.child("User-Messages").child(fromID).updateChildValues([autoId.key: txt])
-            DBProvider.shared.dataref.child("User-Messages").child(self.user?.id ?? "").updateChildValues([autoId.key: txt])
+            DBProvider.shared.dataref.child("User-Messages").child(fromID).child(self.user?.id ?? "").updateChildValues([autoId.key: txt])
+            DBProvider.shared.dataref.child("User-Messages").child(self.user?.id ?? "").child(fromID).updateChildValues([autoId.key: txt])
         }
         collectionView.reloadData()
         txtField.text = ""
@@ -127,13 +127,14 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     func observeUserMessages(closure: @escaping () -> Void) {
-        DBProvider.shared.dataref.child("User-Messages").child(AuthProvider.shared.getCurrentContactID()).observe(.childAdded) { (snapShot) in
+        DBProvider.shared.dataref.child("User-Messages").child(AuthProvider.shared.getCurrentContactID()).child(self.user?.id ?? "").observe(.childAdded) { (snapShot) in
 
             let messageKey = snapShot.key
             DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dic = snapshot.value as? [String:AnyObject] {
 
                     let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
+                    print(message.text)
                     if message.partnerId() == self.user?.id {
                         self.messages.append(message)
                         self.messages.sort(by: { (m1, m2) -> Bool in

@@ -15,7 +15,6 @@ class HistoryViewController: UIViewController , fetchdata {
     var contacts: [Contact] = []
     var messagesDic = [String: Message]()
 
-
     func getAllimage(imagesData: Data) {
         
     }
@@ -28,7 +27,6 @@ class HistoryViewController: UIViewController , fetchdata {
     func user(name: String) {
         nav.title = name
     }
-    
 
     @IBOutlet weak var nav: UINavigationItem!
     @IBAction func Logout(_ sender: Any) {
@@ -78,18 +76,21 @@ class HistoryViewController: UIViewController , fetchdata {
     func observeUserMessages(closure: @escaping () -> Void) {
         DBProvider.shared.dataref.child("User-Messages").child(AuthProvider.shared.getCurrentContactID()).observe(.childAdded) { (snapShot) in
 
-            let messageKey = snapShot.key
-            DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
-                if let dic = snapshot.value as? [String:AnyObject] {
+            let userID = snapShot.key
+            DBProvider.shared.dataref.child("User-Messages").child(AuthProvider.shared.getCurrentContactID()).child(userID).observe(.childAdded, with: { (snapSh) in
+                let messageKey = snapSh.key
+                DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
+                    if let dic = snapshot.value as? [String:AnyObject] {
 
-                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
-                    self.messagesDic[message.partnerId()] = message
-                    self.messages = Array(self.messagesDic.values)
-                    self.messages.sort(by: { (m1, m2) -> Bool in
-                        return m1.time > m2.time
-                    })
-                }
-                closure()
+                        let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
+                        self.messagesDic[message.partnerId()] = message
+                        self.messages = Array(self.messagesDic.values)
+                        self.messages.sort(by: { (m1, m2) -> Bool in
+                            return m1.time > m2.time
+                        })
+                    }
+                    closure()
+                })
             })
 
             closure()
