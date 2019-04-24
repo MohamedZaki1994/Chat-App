@@ -11,18 +11,17 @@ import MobileCoreServices
 import AVKit
 class ChatViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var nav: UINavigationItem!
-    @IBOutlet weak var txtField: UITextField!
     var messageContent = [String]()
     var messagesDic = [String: Message]()
     var messages : [Message] = []
-
     var user : Contact? {
         didSet {
             nav.title = user?.name
         }
     }
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nav: UINavigationItem!
+    @IBOutlet weak var txtField: UITextField!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var inputSendView: NSLayoutConstraint!
     @IBAction func sendBtn(_ sender: Any) {
@@ -75,11 +74,11 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return messages.count
     }
 
-     func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
 
-         func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
         cell.txtLabel.text = messages[indexPath.row].text
         if messages[indexPath.row].toID == AuthProvider.shared.getCurrentContactID() {
@@ -114,18 +113,6 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return CGSize(width: label.frame.width, height: label.frame.height + 10)
     }
 
-    func observeMessages(closure: @escaping () -> Void){
-        DBProvider.shared.messages.observe(.childAdded, with: { (snapShot) in
-
-            if let dic = snapShot.value as? [String:AnyObject] {
-
-                let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? Double)!)
-                self.messageContent.append(message.text)
-            }
-            closure()
-        }, withCancel: nil)
-    }
-
     func observeUserMessages(closure: @escaping () -> Void) {
         DBProvider.shared.dataref.child("User-Messages").child(AuthProvider.shared.getCurrentContactID()).child(self.user?.id ?? "").observe(.childAdded) { (snapShot) in
 
@@ -135,12 +122,10 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
                     let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
                     print(message.text)
-                    if message.partnerId() == self.user?.id {
                         self.messages.append(message)
                         self.messages.sort(by: { (m1, m2) -> Bool in
                             return m1.time < m2.time
                         })
-                    }
                 }
                 closure()
             })

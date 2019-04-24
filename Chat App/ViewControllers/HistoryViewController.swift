@@ -34,18 +34,13 @@ class HistoryViewController: UIViewController , fetchdata {
             dismiss(animated: true, completion: nil)
         }
     }
-    
-    
+
     @IBAction func chatBtn(_ sender: Any) {
         let TableViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TableViewController") as! ContactTableViewController
         navigationController?.pushViewController(TableViewController, animated: true)
 
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
 
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
         DBProvider.shared.delegate = self
@@ -92,7 +87,6 @@ class HistoryViewController: UIViewController , fetchdata {
                     closure()
                 })
             })
-
             closure()
         }
     }
