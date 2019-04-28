@@ -83,10 +83,11 @@ class DBProvider {
           self.delegate?.user(name: UserName)
         }
     }
-    func saveImage (img : UIImage , name : String, closure : @escaping () -> Void ) {
+
+    func saveImage (img : UIImage ,categoryName: String, name : String, closure : @escaping () -> Void ) {
         
         if let uploadedImage = UIImageJPEGRepresentation(img, 0.3){
-           let ch =  imageStorageRef.child(name)
+           let ch =  DBProvider.shared.storageRef.child(categoryName).child(name)
             ch.putData(uploadedImage, metadata: nil) { (metadata, error) in
                 if error != nil {
                     print(error as Any)
@@ -107,7 +108,6 @@ class DBProvider {
     }
     
     func  downloadImage (con: Contact, closure:  @escaping (UIImage) -> Void){
-
         if let cache = imageCache.object(forKey: con.imageURL as AnyObject){
             closure(cache as! UIImage)
             return
@@ -118,11 +118,11 @@ class DBProvider {
                 print(error)
                 return
             }
-            DispatchQueue.main.async {
+//            DispatchQueue.main.async {
 //                Caching the data
-                self.imageCache.setObject(UIImage(data: data!)!, forKey: con.imageURL as AnyObject)
+//                self.imageCache.setObject(UIImage(data: data!)!, forKey: con.imageURL as AnyObject)
                 closure(UIImage(data:data!)!)
-            }
+//            }
         }.resume()
     }
     

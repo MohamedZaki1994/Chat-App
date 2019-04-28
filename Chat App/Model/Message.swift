@@ -14,6 +14,7 @@ class Message {
     private var _fromId : String
     private var _text : String
     private var _time: TimeInterval
+    private var _imageURL: String
     
     var toID: String {
         return _toId
@@ -27,15 +28,21 @@ class Message {
         return _text
     }
 
+    var imageURL: String {
+        return _imageURL
+    }
+
+
     var time: TimeInterval {
         return _time
     }
     
-    init(toId: String, fromId: String, text: String, time: TimeInterval) {
+    init(toId: String, fromId: String, text: String, imageURL: String, time: TimeInterval) {
         self._toId = toId
         self._fromId = fromId
         self._text = text
         self._time = time
+        self._imageURL = imageURL
     }
 
     func partnerId() -> String {

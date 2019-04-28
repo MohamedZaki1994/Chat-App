@@ -19,4 +19,5 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var labelTrailing: NSLayoutConstraint!
     @IBOutlet weak var labelLeading: NSLayoutConstraint!
     @IBOutlet weak var labelWidth: NSLayoutConstraint!
+    @IBOutlet weak var chatImage: UIImageView!
 }

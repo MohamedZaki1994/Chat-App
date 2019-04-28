@@ -23,13 +23,12 @@ class ContactTableViewController: UITableViewController , fetchdata{
 
     func dataReceived(cont: [Contact]) {
      self.contacts = cont
-            for con in  cont {
-                DBProvider.shared.downloadImage(con: con){ img in
-                    self.images.append(img)
-                    self.tableView.reloadData()
-                }
-            }
-        
+//            for con in  cont {
+//                DBProvider.shared.downloadImage(con: con){ img in
+//                    self.images.append(img)
+//                    self.tableView.reloadData()
+//                }
+//            }
         tableView.reloadData()
     }
 
