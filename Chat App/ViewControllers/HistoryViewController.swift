@@ -77,7 +77,7 @@ class HistoryViewController: UIViewController , fetchdata {
                 DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
                     if let dic = snapshot.value as? [String:AnyObject] {
 
-                        let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!, imageURL: "")
+                        let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!, imageURL: dic["imageURL"] as? String ?? "")
                         self.messagesDic[message.partnerId()] = message
                         self.messages = Array(self.messagesDic.values)
                         self.messages.sort(by: { (m1, m2) -> Bool in

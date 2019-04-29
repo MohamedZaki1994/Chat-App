@@ -9,12 +9,13 @@
 import UIKit
 import MobileCoreServices
 import AVKit
-class ChatViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class ChatViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     var messageContent = [String]()
     var messagesDic = [String: Message]()
     var messages : [Message] = []
     var imageURL: String?
+    var image: UIImage?
     var user : Contact? {
         didSet {
             nav.title = user?.name
@@ -25,6 +26,25 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var txtField: UITextField!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var inputSendView: NSLayoutConstraint!
+    @IBAction func sendImageAction(_ sender: Any) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+        imagePicker.delegate = self
+    }
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        var selectedImage : UIImage?
+        if let editImage = info["UIImagePickerControllerCropRect"] as? UIImage {
+            selectedImage = editImage
+        }
+        else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage{
+            selectedImage = originalImage
+        }
+        if let selectedImg = selectedImage {
+            image = selectedImg
+        }
+        dismiss(animated: true, completion: nil)
+    }
     @IBAction func sendBtn(_ sender: Any) {
         guard let txt = txtField.text else {
             return
@@ -37,8 +57,13 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 print(error as Any)
                 return
             }
+//            if let imageURL = self.imageURL {
+//                DBProvider.shared.dataref.child("User-Messages").child(fromID).child(self.user?.id ?? "").updateChildValues([autoId.key: imageURL])
+//                DBProvider.shared.dataref.child("User-Messages").child(self.user?.id ?? "").child(fromID).updateChildValues([autoId.key: imageURL])
+//            } else {
             DBProvider.shared.dataref.child("User-Messages").child(fromID).child(self.user?.id ?? "").updateChildValues([autoId.key: txt])
             DBProvider.shared.dataref.child("User-Messages").child(self.user?.id ?? "").child(fromID).updateChildValues([autoId.key: txt])
+//            }
         }
         collectionView.reloadData()
         txtField.text = ""
@@ -52,6 +77,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         NotificationCenter.default.addObserver(self, selector: #selector(whenKeyboardOpens), name: .UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(whenKeyboardCloses), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        imageURL = "www.google.com"
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -120,9 +146,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             let messageKey = snapShot.key
             DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dic = snapshot.value as? [String:AnyObject] {
-
-                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!, imageURL: "")
-                    print(message.text)
+                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!, imageURL: dic["imageURL"] as? String ?? "")
                         self.messages.append(message)
                         self.messages.sort(by: { (m1, m2) -> Bool in
                             return m1.time < m2.time

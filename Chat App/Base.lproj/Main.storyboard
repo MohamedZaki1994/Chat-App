@@ -250,8 +250,34 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKh-na-eO1">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                         <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kE6-Mc-mv2">
+                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imj" translatesAutoresizingMaskIntoConstraints="NO" id="lhr-1c-tIk">
+                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                    </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xF0-Fg-Otz">
+                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                        <connections>
+                                                            <action selector="sendImageAction:" destination="rD5-Lg-1al" eventType="touchUpInside" id="Ixc-35-13o"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="lhr-1c-tIk" firstAttribute="top" secondItem="kE6-Mc-mv2" secondAttribute="top" id="8Gz-CM-anC"/>
+                                                    <constraint firstAttribute="width" constant="50" id="MtH-KV-dND"/>
+                                                    <constraint firstItem="xF0-Fg-Otz" firstAttribute="top" secondItem="kE6-Mc-mv2" secondAttribute="top" id="bOH-N8-YeZ"/>
+                                                    <constraint firstAttribute="bottom" secondItem="xF0-Fg-Otz" secondAttribute="bottom" id="nEr-L5-YSG"/>
+                                                    <constraint firstAttribute="trailing" secondItem="xF0-Fg-Otz" secondAttribute="trailing" id="nIA-8J-tbV"/>
+                                                    <constraint firstAttribute="trailing" secondItem="lhr-1c-tIk" secondAttribute="trailing" id="olG-e3-Qtc"/>
+                                                    <constraint firstAttribute="bottom" secondItem="lhr-1c-tIk" secondAttribute="bottom" id="rka-bv-e43"/>
+                                                    <constraint firstItem="lhr-1c-tIk" firstAttribute="leading" secondItem="kE6-Mc-mv2" secondAttribute="leading" id="y7S-Ox-mW0"/>
+                                                    <constraint firstItem="xF0-Fg-Otz" firstAttribute="leading" secondItem="kE6-Mc-mv2" secondAttribute="leading" id="z7s-NB-KO3"/>
+                                                </constraints>
+                                            </view>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="df6-eb-fNT">
-                                                <rect key="frame" x="0.0" y="0.0" width="325" height="50"/>
+                                                <rect key="frame" x="50" y="0.0" width="275" height="50"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -475,4 +501,7 @@
             <point key="canvasLocation" x="2348" y="54.422788605697157"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="imj" width="200" height="200"/>
+    </resources>
 </document>
