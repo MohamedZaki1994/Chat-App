@@ -14,6 +14,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var messageContent = [String]()
     var messagesDic = [String: Message]()
     var messages : [Message] = []
+    var imageURL: String?
     var user : Contact? {
         didSet {
             nav.title = user?.name
@@ -31,7 +32,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let fromID = AuthProvider.shared.getCurrentContactID()
         let timeStamp = NSDate().timeIntervalSince1970
         let autoId = DBProvider.shared.messages.childByAutoId()
-        autoId.updateChildValues(["txt":txt, "toId":self.user?.id ?? 0, "fromId": fromID,"timeStamp":timeStamp]) { (error, ref) in
+        autoId.updateChildValues(["txt":txt, "imageURL": imageURL ?? "", "toId":self.user?.id ?? 0, "fromId": fromID,"timeStamp":timeStamp]) { (error, ref) in
             if error != nil {
                 print(error as Any)
                 return
@@ -120,7 +121,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dic = snapshot.value as? [String:AnyObject] {
 
-                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
+                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!, imageURL: "")
                     print(message.text)
                         self.messages.append(message)
                         self.messages.sort(by: { (m1, m2) -> Bool in
