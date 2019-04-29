@@ -55,7 +55,7 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
         if !((username?.text?.isEmpty)!) && !((password?.text?.isEmpty)!){
             loadingIndication.isHidden = false
             loadingIndication.startAnimating()
-            DBProvider.shared.saveImage(img :self.SelectedImg, categoryName: "profile Pic" , name :(self.username?.text)!){ 
+            DBProvider.shared.saveImage(img :self.SelectedImg , name :(self.username?.text)!){
                 AuthProvider.shared.register(username: (self.username?.text)!, password: (self.password?.text)!,image : self.SelectedImg) { [weak self] (msg) in
                 guard let `self` = self else { return }
                

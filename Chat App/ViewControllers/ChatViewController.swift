@@ -9,13 +9,11 @@
 import UIKit
 import MobileCoreServices
 import AVKit
-class ChatViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ChatViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     var messageContent = [String]()
     var messagesDic = [String: Message]()
     var messages : [Message] = []
-    var chatImage: UIImage?
-    var imageURL: String?
     var user : Contact? {
         didSet {
             nav.title = user?.name
@@ -26,36 +24,6 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
     @IBOutlet weak var txtField: UITextField!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var inputSendView: NSLayoutConstraint!
-    @IBAction func imgAction(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.allowsEditing = true
-        present(imagePicker, animated: true, completion: nil)
-    }
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        var image: UIImage?
-        if let editImage = info["UIImagePickerControllerCropRect"] as? UIImage {
-            image = editImage
-        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            image = originalImage
-        }
-        if let selectedImage = image {
-            chatImage = selectedImage
-            uploadImage(image: selectedImage)
-        }
-        dismiss(animated: true, completion: nil)
-    }
-    func uploadImage(image: UIImage?) {
-        guard let image = image else {return}
-        DBProvider.shared.saveImage(img: image, categoryName: "Chat Images", name: "chatImages") {
-//            print(url.absoluteString)
-//            self.imageURL = url.absoluteString
-            print("Done")
-        }
-    }
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
     @IBAction func sendBtn(_ sender: Any) {
         guard let txt = txtField.text else {
             return
@@ -63,7 +31,7 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let fromID = AuthProvider.shared.getCurrentContactID()
         let timeStamp = NSDate().timeIntervalSince1970
         let autoId = DBProvider.shared.messages.childByAutoId()
-        autoId.updateChildValues(["txt":txt, "imageURL": imageURL ?? "", "toId":self.user?.id ?? 0, "fromId": fromID,"timeStamp":timeStamp]) { (error, ref) in
+        autoId.updateChildValues(["txt":txt, "toId":self.user?.id ?? 0, "fromId": fromID,"timeStamp":timeStamp]) { (error, ref) in
             if error != nil {
                 print(error as Any)
                 return
@@ -73,8 +41,6 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
         }
         collectionView.reloadData()
         txtField.text = ""
-        chatImage = nil
-        imageURL = nil
     }
 
     override func viewDidLoad() {
@@ -154,7 +120,8 @@ class ChatViewController: UIViewController, UICollectionViewDelegate, UICollecti
             DBProvider.shared.messages.child(messageKey).observeSingleEvent(of: .value, with: { (snapshot) in
                 if let dic = snapshot.value as? [String:AnyObject] {
 
-                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, imageURL: dic["imageURL"] as? String ?? "", time: (dic["timeStamp"] as? TimeInterval)!)
+                    let message = Message(toId: (dic["toId"] as? String)!, fromId: dic["fromId"] as! String, text: dic["txt"] as! String, time: (dic["timeStamp"] as? TimeInterval)!)
+                    print(message.text)
                         self.messages.append(message)
                         self.messages.sort(by: { (m1, m2) -> Bool in
                             return m1.time < m2.time

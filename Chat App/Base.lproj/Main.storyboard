@@ -250,34 +250,8 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aKh-na-eO1">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aBV-q1-KwN">
-                                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img" translatesAutoresizingMaskIntoConstraints="NO" id="rIL-vf-gHD">
-                                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                                    </imageView>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AB3-mg-d2t">
-                                                        <rect key="frame" x="20" y="0.0" width="30" height="50"/>
-                                                        <connections>
-                                                            <action selector="imgAction:" destination="rD5-Lg-1al" eventType="touchUpInside" id="Rtb-up-zbG"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstItem="rIL-vf-gHD" firstAttribute="top" secondItem="aBV-q1-KwN" secondAttribute="top" id="0V4-Wd-TBi"/>
-                                                    <constraint firstAttribute="trailing" secondItem="rIL-vf-gHD" secondAttribute="trailing" id="2AJ-3j-UgZ"/>
-                                                    <constraint firstAttribute="bottom" secondItem="AB3-mg-d2t" secondAttribute="bottom" id="Eba-Uh-BV7"/>
-                                                    <constraint firstItem="AB3-mg-d2t" firstAttribute="trailing" secondItem="aBV-q1-KwN" secondAttribute="trailing" id="F4j-14-CmN"/>
-                                                    <constraint firstAttribute="width" constant="50" id="HTH-Eb-cAq"/>
-                                                    <constraint firstItem="rIL-vf-gHD" firstAttribute="leading" secondItem="aBV-q1-KwN" secondAttribute="leading" id="Ngr-iE-Vak"/>
-                                                    <constraint firstAttribute="bottom" secondItem="rIL-vf-gHD" secondAttribute="bottom" id="Ull-et-Yvh"/>
-                                                    <constraint firstAttribute="trailing" secondItem="AB3-mg-d2t" secondAttribute="trailing" id="aQ2-hj-ciO"/>
-                                                    <constraint firstItem="AB3-mg-d2t" firstAttribute="top" secondItem="aBV-q1-KwN" secondAttribute="top" id="auE-nR-LYh"/>
-                                                </constraints>
-                                            </view>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="df6-eb-fNT">
-                                                <rect key="frame" x="50" y="0.0" width="275" height="50"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="325" height="50"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
@@ -337,18 +311,10 @@
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kEi-Q8-v4h">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="282" height="83"/>
-                                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                </imageView>
                                                             </subviews>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <constraints>
-                                                                <constraint firstItem="kEi-Q8-v4h" firstAttribute="leading" secondItem="dsW-FL-CHs" secondAttribute="leading" id="9Vh-5y-lbW"/>
                                                                 <constraint firstItem="ApC-37-p5z" firstAttribute="leading" secondItem="dsW-FL-CHs" secondAttribute="leading" constant="8" id="9ft-PS-fNb"/>
-                                                                <constraint firstItem="kEi-Q8-v4h" firstAttribute="top" secondItem="dsW-FL-CHs" secondAttribute="top" id="FI9-ET-2mT"/>
-                                                                <constraint firstAttribute="bottom" secondItem="kEi-Q8-v4h" secondAttribute="bottom" id="Fk3-1U-Bpf"/>
-                                                                <constraint firstAttribute="trailing" secondItem="kEi-Q8-v4h" secondAttribute="trailing" id="UXs-zO-Jbk"/>
                                                                 <constraint firstAttribute="trailing" secondItem="ApC-37-p5z" secondAttribute="trailing" constant="8" id="VsO-DS-jBM"/>
                                                                 <constraint firstAttribute="bottom" secondItem="ApC-37-p5z" secondAttribute="bottom" id="WQ4-wa-sOM"/>
                                                                 <constraint firstItem="ApC-37-p5z" firstAttribute="top" secondItem="dsW-FL-CHs" secondAttribute="top" id="bal-0u-k7o"/>
@@ -374,7 +340,6 @@
                                         <connections>
                                             <outlet property="bubbleView" destination="dsW-FL-CHs" id="DKl-WH-lPa"/>
                                             <outlet property="cellView" destination="w6j-1N-fAN" id="iB1-QR-S5Y"/>
-                                            <outlet property="chatImage" destination="kEi-Q8-v4h" id="eTo-oj-BqV"/>
                                             <outlet property="labelLeading" destination="TLL-SG-0qE" id="Qqx-aR-gJo"/>
                                             <outlet property="labelTrailing" destination="iMt-RQ-RsL" id="dGs-Ap-DRm"/>
                                             <outlet property="labelWidth" destination="R3k-S9-ZuK" id="0lJ-e2-RHJ"/>
@@ -510,7 +475,4 @@
             <point key="canvasLocation" x="2348" y="54.422788605697157"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="img" width="200" height="200"/>
-    </resources>
 </document>
