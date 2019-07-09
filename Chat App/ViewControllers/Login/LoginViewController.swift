@@ -18,6 +18,18 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
     @IBOutlet weak var loading: UIActivityIndicatorView!
     @IBOutlet weak var loadingIndication: NVActivityIndicatorView!
     var SelectedImg : UIImage = UIImage(named: "user")!
+    @IBOutlet weak var loginBtnOutlet: UIButton!
+    @IBOutlet weak var registerBtnOutlet: UIButton!
+    @IBOutlet weak var segmentControl: UISegmentedControl!
+    @IBAction func loginOrRegister(_ sender: Any) {
+        switch segmentControl.selectedSegmentIndex {
+        case 0:
+            showLogin()
+        default:
+            showRegister()
+        }
+
+    }
 
     @IBAction func Login(_ sender: Any) {
         
@@ -84,8 +96,8 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
     override func viewDidLoad() {
         super.viewDidLoad()
         LoginView?.layer.cornerRadius = 5
+        showLogin()
         loading.isHidden = true
-        
     }
 
     func addgesture() {
@@ -145,6 +157,17 @@ class ViewController: UIViewController , UIImagePickerControllerDelegate , UINav
         }
         dismiss(animated: true, completion: nil)
     }
-    
+
+    func showLogin() {
+        imgView.isHidden = true
+        loginBtnOutlet.isHidden = false
+        registerBtnOutlet.isHidden = true
+
+    }
+    func showRegister() {
+        imgView.isHidden = false
+        loginBtnOutlet.isHidden = true
+        registerBtnOutlet.isHidden = false
+    }
 }
 

@@ -19,10 +19,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4BC-Kf-JEl">
-                                <rect key="frame" x="12" y="152" width="351" height="150"/>
+                                <rect key="frame" x="12" y="214" width="351" height="150"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="MT1-9e-dEz">
-                                        <rect key="frame" x="0.0" y="0.0" width="351" height="150"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="MT1-9e-dEz">
+                                        <rect key="frame" x="0.0" y="-1" width="351" height="150"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YSI-6V-FUI">
                                                 <rect key="frame" x="0.0" y="0.0" width="351" height="75"/>
@@ -57,7 +57,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SFr-mh-asY">
-                                <rect key="frame" x="215" y="387" width="110" height="30"/>
+                                <rect key="frame" x="215" y="449" width="110" height="30"/>
                                 <color key="backgroundColor" red="0.083815831218274073" green="0.027470067122217889" blue="0.048836787313215287" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="110" id="YlH-Yg-oCn"/>
@@ -70,7 +70,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dcx-4I-sLo">
-                                <rect key="frame" x="50" y="387" width="100" height="30"/>
+                                <rect key="frame" x="50" y="449" width="100" height="30"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="xjR-p0-YAD"/>
@@ -114,10 +114,19 @@
                                     <constraint firstAttribute="height" constant="80" id="yhP-Np-rSG"/>
                                 </constraints>
                             </view>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Xd0-Um-7jA">
+                                <rect key="frame" x="127" y="151" width="121" height="29"/>
+                                <segments>
+                                    <segment title="Login"/>
+                                    <segment title="Sign up"/>
+                                </segments>
+                                <connections>
+                                    <action selector="loginOrRegister:" destination="uEi-Nw-9fs" eventType="valueChanged" id="Brf-Ff-QfD"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="0.037772280201628927" green="0.63271036460404484" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="MT1-9e-dEz" firstAttribute="top" secondItem="97W-cT-os0" secondAttribute="top" constant="132" id="0oT-LY-irC"/>
                             <constraint firstItem="Vdw-T1-eFj" firstAttribute="centerX" secondItem="97W-cT-os0" secondAttribute="centerX" id="B2b-It-FXz"/>
                             <constraint firstItem="lPE-tS-J7P" firstAttribute="centerX" secondItem="3RB-y7-qoW" secondAttribute="centerX" id="DHA-er-fl3"/>
                             <constraint firstItem="SFr-mh-asY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3RB-y7-qoW" secondAttribute="leading" constant="20" symbolic="YES" id="EWR-j0-nkc"/>
@@ -125,7 +134,8 @@
                             <constraint firstItem="97W-cT-os0" firstAttribute="trailing" secondItem="SFr-mh-asY" secondAttribute="trailing" constant="50" id="LBo-x9-uoA"/>
                             <constraint firstItem="r88-XL-JQZ" firstAttribute="top" secondItem="97W-cT-os0" secondAttribute="top" constant="28" id="MBc-ln-ypg"/>
                             <constraint firstItem="lPE-tS-J7P" firstAttribute="centerY" secondItem="3RB-y7-qoW" secondAttribute="centerY" id="Mf0-lR-5Rz"/>
-                            <constraint firstItem="4BC-Kf-JEl" firstAttribute="top" secondItem="r88-XL-JQZ" secondAttribute="bottom" constant="38" id="RxD-Cq-Zmp"/>
+                            <constraint firstItem="4BC-Kf-JEl" firstAttribute="top" secondItem="r88-XL-JQZ" secondAttribute="bottom" constant="100" id="RxD-Cq-Zmp"/>
+                            <constraint firstItem="Xd0-Um-7jA" firstAttribute="centerX" secondItem="3RB-y7-qoW" secondAttribute="centerX" id="SIO-KI-4EM"/>
                             <constraint firstItem="SFr-mh-asY" firstAttribute="top" secondItem="BgZ-Bw-MNa" secondAttribute="bottom" constant="85" id="TLI-jP-5xk"/>
                             <constraint firstItem="4BC-Kf-JEl" firstAttribute="leading" secondItem="97W-cT-os0" secondAttribute="leading" constant="12" id="Tsj-35-o1H"/>
                             <constraint firstItem="97W-cT-os0" firstAttribute="trailing" secondItem="SFr-mh-asY" secondAttribute="trailing" constant="50" id="VqO-dg-eUd"/>
@@ -134,7 +144,9 @@
                             <constraint firstItem="Vdw-T1-eFj" firstAttribute="top" secondItem="97W-cT-os0" secondAttribute="top" constant="28" id="kP3-oD-o5f"/>
                             <constraint firstItem="Dcx-4I-sLo" firstAttribute="top" secondItem="BgZ-Bw-MNa" secondAttribute="bottom" constant="85" id="nzt-nI-4H3"/>
                             <constraint firstItem="r88-XL-JQZ" firstAttribute="centerX" secondItem="4BC-Kf-JEl" secondAttribute="centerX" id="qXa-Os-8Ej"/>
+                            <constraint firstItem="YSI-6V-FUI" firstAttribute="top" secondItem="Xd0-Um-7jA" secondAttribute="bottom" constant="35" id="rft-pH-pgr"/>
                             <constraint firstItem="Dcx-4I-sLo" firstAttribute="leading" secondItem="97W-cT-os0" secondAttribute="leading" constant="50" id="uSK-98-Xiu"/>
+                            <constraint firstItem="Xd0-Um-7jA" firstAttribute="top" secondItem="Vdw-T1-eFj" secondAttribute="bottom" constant="37" id="umi-km-NOh"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="97W-cT-os0"/>
                     </view>
@@ -145,7 +157,10 @@
                         <outlet property="imgView" destination="r88-XL-JQZ" id="tyo-eg-XFK"/>
                         <outlet property="loading" destination="HLn-QP-QSY" id="a6A-sz-Mqq"/>
                         <outlet property="loadingIndication" destination="lPE-tS-J7P" id="ufa-jm-CnM"/>
+                        <outlet property="loginBtnOutlet" destination="Dcx-4I-sLo" id="DkK-on-Xaz"/>
                         <outlet property="password" destination="BgZ-Bw-MNa" id="dB7-eR-QAr"/>
+                        <outlet property="registerBtnOutlet" destination="SFr-mh-asY" id="4ws-qi-d6n"/>
+                        <outlet property="segmentControl" destination="Xd0-Um-7jA" id="Ift-gS-t86"/>
                         <outlet property="username" destination="YSI-6V-FUI" id="dgd-cn-FLu"/>
                     </connections>
                 </viewController>
